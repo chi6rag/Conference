@@ -2,6 +2,7 @@ package com.thoughtworks.conference.presenter;
 
 import com.thoughtworks.conference.apiclient.APIClient;
 import com.thoughtworks.conference.apiclient.APIClientCallback;
+import com.thoughtworks.conference.apiclient.NetworkException;
 import com.thoughtworks.conference.model.Category;
 import com.thoughtworks.conference.model.Conference;
 import com.thoughtworks.conference.model.Session;
@@ -70,6 +71,24 @@ public class AgendaPresenterTest {
     inOrder.verify(mockApiClient).get(eq(CONFERENCE_ENDPOINT), any(APIClientCallback.class));
     inOrder.verify(mockAgendaView).render(eq(conference));
     inOrder.verify(mockAgendaView).dismissProgressDialog();
+  }
+
+  @Test
+  public void hideProgressDialogAndShowErrorDialogOnFailureOfApiCall(){
+    final String errorMessage = "No network";
+    doAnswer(new Answer() {
+      @Override
+      public Object answer(InvocationOnMock invocation) throws Throwable {
+        final APIClientCallback<Conference> callback = (APIClientCallback) invocation.getArguments()[1];
+        callback.onFailure(new NetworkException(errorMessage));
+        return null;
+      }
+    }).when(mockApiClient).get(eq(CONFERENCE_ENDPOINT), any(APIClientCallback.class));
+
+    agendaPresenter.presentConference();
+
+    verify(mockAgendaView, times(1)).showErrorDialog(eq(errorMessage));
+    verify(mockAgendaView, times(1)).dismissProgressDialog();
   }
 
 }
