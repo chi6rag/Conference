@@ -14,6 +14,10 @@ public class Conference {
     this.sessions = Arrays.asList(sessions);
   }
 
+  public List<Session> getSessions() {
+    return sessions;
+  }
+
   public List<Session> filterByCategory(Category category) {
     List<Session> filteredSessions = new ArrayList<>();
     for (Session session : sessions) {
