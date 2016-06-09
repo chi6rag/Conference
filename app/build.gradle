@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -17,18 +18,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTestHelpers/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.firebase:firebase-client-android:2.5.2+'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.github.satyan:sugar:1.3.1'
-    compile 'joda-time:joda-time:2.9.2'
-
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
-
+    compile 'com.firebase:firebase-client-android:2.5.2+'
+    compile 'joda-time:joda-time:2.9.2'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.github.satyan:sugar:1.3.1'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.apache.commons:commons-io:1.3.2'
     androidTestCompile('com.android.support.test:runner:0.4.1'){
         exclude group: 'com.android.support', module: 'support-annotations'
     }
@@ -41,5 +52,4 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-core:1.10.19'
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
-
 }
