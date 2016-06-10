@@ -9,6 +9,7 @@ import com.thoughtworks.conference.view.AgendaView;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -16,6 +17,7 @@ import static com.thoughtworks.conference.testdata.TestDataUtil.parseDate;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,14 +51,23 @@ public class AgendaPresenterTest {
   }
 
   @Test
-  public void shouldCallApiClient() {
-    agendaPresenter.fetchEvents();
+  public void callApiClient() {
+    agendaPresenter.presentConference();
     verify(mockApiClient, times(1)).get(eq(CONFERENCE_ENDPOINT), any(APIClientCallback.class));
   }
 
   @Test
-  public void shouldRenderViewOnApiResponse(){
-    agendaPresenter.fetchEvents();
+  public void renderViewOnApiResponse(){
+    agendaPresenter.presentConference();
     verify(mockAgendaView, times(1)).render(eq(conference));
+  }
+  @Test
+  public void showProgressDialogAndRenderResponseAndHideDialogInOrder(){
+    agendaPresenter.presentConference();
+    InOrder inOrder = inOrder(mockAgendaView, mockApiClient);
+    inOrder.verify(mockAgendaView).showProgressDialog();
+    inOrder.verify(mockApiClient).get(eq(CONFERENCE_ENDPOINT), any(APIClientCallback.class));
+    inOrder.verify(mockAgendaView).render(eq(conference));
+    inOrder.verify(mockAgendaView).dismissProgressDialog();
   }
 }

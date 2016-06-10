@@ -15,11 +15,13 @@ public class AgendaPresenter {
     this.agendaView = agendaView;
   }
 
-  public void fetchEvents() {
+  public void presentConference() {
+    agendaView.showProgressDialog();
     apiClient.get(CONFERENCE_ENDPOINT, new APIClientCallback<Conference>() {
       @Override
       public void onSuccess(Conference conference) {
         agendaView.render(conference);
+        agendaView.dismissProgressDialog();
       }
 
       @Override
