@@ -48,7 +48,6 @@ public class TrackFragmentTest {
     onView(withId(R.id.list_view)).check(matches(isDisplayed()));
     onData(allOf(instanceOf(SessionViewModel.class))).inAdapterView(withId(R.id.list_view))
         .atPosition(0).onChildView(withId(R.id.date)).check(matches(withText("03:30 AM - 04:30 AM (1h)")));
-
   }
 }
 
