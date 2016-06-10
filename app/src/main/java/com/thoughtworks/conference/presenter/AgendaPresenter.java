@@ -1,5 +1,6 @@
 package com.thoughtworks.conference.presenter;
 
+import com.firebase.client.annotations.NotNull;
 import com.thoughtworks.conference.apiclient.APIClient;
 import com.thoughtworks.conference.apiclient.APIClientCallback;
 import com.thoughtworks.conference.model.Conference;
@@ -26,9 +27,12 @@ public class AgendaPresenter {
 
       @Override
       public void onFailure(Exception e) {
+        agendaView.dismissProgressDialog();
+        agendaView.showErrorDialog(e.getMessage());
       }
 
       @Override
+      @NotNull
       public Class<Conference> getClassOfType() {
         return null;
       }
