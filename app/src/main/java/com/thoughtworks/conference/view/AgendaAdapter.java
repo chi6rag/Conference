@@ -40,21 +40,27 @@ public class AgendaAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    ViewHolder viewHolder = null;
+    ViewHolder viewSource = null;
     if(convertView == null){
       convertView = inflater.inflate(R.layout.session, parent, false);
-      viewHolder = new ViewHolder();
-      viewHolder.date = (TextView) convertView.findViewById(R.id.date);
-      convertView.setTag(viewHolder);
+      viewSource = new ViewHolder();
+      viewSource.date = (TextView) convertView.findViewById(R.id.date);
+      viewSource.location = (TextView) convertView.findViewById(R.id.location);
+      viewSource.title = (TextView) convertView.findViewById(R.id.title);
+      convertView.setTag(viewSource);
     }
 
-    viewHolder = (ViewHolder) convertView.getTag();
+    viewSource = (ViewHolder) convertView.getTag();
     SessionViewModel session = sessions.get(position);
-    viewHolder.date.setText(session.getDisplayTime());
+    viewSource.date.setText(session.getDisplayTime());
+    viewSource.location.setText(session.getLocation());
+    viewSource.title.setText(session.getName());
     return convertView;
   }
 
   protected class ViewHolder {
     TextView date;
+    TextView title;
+    TextView location;
   }
 }

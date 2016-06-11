@@ -34,7 +34,7 @@ public class AgendaPresenter {
       @Override
       @NotNull
       public Class<Conference> getClassOfType() {
-        return null;
+        return Conference.class;
       }
     });
   }

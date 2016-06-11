@@ -18,8 +18,8 @@ public class Conference {
     return sessions;
   }
 
-  public List<Session> filterByCategory(Category category) {
-    List<Session> filteredSessions = new ArrayList<>();
+  public ArrayList<Session> filterByCategory(Category category) {
+    ArrayList<Session> filteredSessions = new ArrayList<>();
     for (Session session : sessions) {
       if (category.equals(session.getCategory())) filteredSessions.add(session);
     }

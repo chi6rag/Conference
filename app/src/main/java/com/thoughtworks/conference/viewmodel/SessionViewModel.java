@@ -46,4 +46,12 @@ public class SessionViewModel {
   public int hashCode() {
     return session != null ? session.hashCode() : 0;
   }
+
+  public String getLocation() {
+    return session.getLocation();
+  }
+
+  public String getName() {
+    return session.getName();
+  }
 }
