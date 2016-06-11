@@ -23,10 +23,31 @@ public class SessionDAO extends SugarRecord {
     this.category = category;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.description = description;
+    this.location = location;
+    this.category = category;
   }
 
   public static SessionDAO createFrom(Session session){
     return new SessionDAO(session.getName(), session.getStartTime(), session.getEndTime(), session.getDescription(), session.getLocation(), session.getCategory());
+  }
+
+  public Session toSession() {
+    return new Session(name, description, startTime, endTime, category, location);
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public Category getCategory() {
+    return category;
   }
 
   public Date getStartTime() {
@@ -37,7 +58,7 @@ public class SessionDAO extends SugarRecord {
     return endTime;
   }
 
-  public Session toSession() {
-    return new Session(name, description, startTime, endTime, category, location);
+  public String getName(){
+    return name;
   }
 }

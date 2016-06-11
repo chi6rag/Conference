@@ -33,6 +33,9 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView {
   @Override
   public void render(Conference conference) {
     setupTabs(conference);
+    ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+    ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), conference);
+    viewPager.setAdapter(adapter);
   }
 
   @Override
@@ -60,5 +63,4 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView {
     viewPager.setAdapter(adapter);
     tabLayout.setupWithViewPager(viewPager);
   }
-
 }

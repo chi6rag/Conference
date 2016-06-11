@@ -61,5 +61,5 @@ public class TrackFragment extends Fragment implements TrackView {
     intent.putExtra(DetailsActivity.SESSION_BUNDLE_PARAM, session);
     startActivity(intent);
   }
-
 }
+

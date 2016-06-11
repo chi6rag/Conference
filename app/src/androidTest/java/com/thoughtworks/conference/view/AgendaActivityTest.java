@@ -61,23 +61,6 @@ public class AgendaActivityTest {
     mockAPIClientForSuccess();
   }
 
-  private void mockAPIClientForSuccess() {
-    doAnswer(new Answer() {
-      @Override
-      public Object answer(InvocationOnMock invocation) throws Throwable {
-        final APIClientCallback callback = (APIClientCallback) invocation.getArguments()[1];
-
-        Session session1 = new Session("Craft", "Try your hand at craft", parseDate("2016-05-23T19:15:00+05:30"), parseDate("2016-05-23T20:15:00+05:30"), Category.ASPIRE, "Ballroom");
-        Session session2 = new Session("IOTT", "Awesome project", parseDate("2016-05-23T19:15:00+05:30"), parseDate("2016-05-23T20:15:00+05:30"), Category.BELONG, "Grand Hall");
-        Session session3 = new Session("Keynote", "By Roy Singham", parseDate("2016-05-23T17:15:00+05:30"), parseDate("2016-05-23T18:15:00+05:30"), Category.CREATE, "Pre Function Area");
-        Conference conference = new Conference(session1, session2, session3);
-
-        callback.onSuccess(conference);
-        return null;
-      }
-    }).when(apiClient).get(eq(URL), any(APIClientCallback.class));
-  }
-
   @Test
   public void swipeAndAssertOnAspire(){
     activityTestRule.launchActivity(new Intent());
@@ -100,6 +83,22 @@ public class AgendaActivityTest {
     onView(atPositionInViewGroup(slidingTabStripViewMatcher, 2)).check(matches(withChild(withText("BELONG"))));
   }
 
+  private void mockAPIClientForSuccess() {
+    doAnswer(new Answer() {
+      @Override
+      public Object answer(InvocationOnMock invocation) throws Throwable {
+        final APIClientCallback callback = (APIClientCallback) invocation.getArguments()[1];
+
+        Session session1 = new Session("Craft", "Try your hand at craft", parseDate("2016-05-23T19:15:00+05:30"), parseDate("2016-05-23T20:15:00+05:30"), Category.ASPIRE, "Ballroom");
+        Session session2 = new Session("IOTT", "Awesome project", parseDate("2016-05-23T19:15:00+05:30"), parseDate("2016-05-23T20:15:00+05:30"), Category.BELONG, "Grand Hall");
+        Session session3 = new Session("Keynote", "By Roy Singham", parseDate("2016-05-23T17:15:00+05:30"), parseDate("2016-05-23T18:15:00+05:30"), Category.CREATE, "Pre Function Area");
+        Conference conference = new Conference(session1, session2, session3);
+
+        callback.onSuccess(conference);
+        return null;
+      }
+    }).when(apiClient).get(eq(URL), any(APIClientCallback.class));
+  }
 
   @NonNull
   private ConferenceAppAndroidJUnitRunner.ActivityProvider<AgendaActivity> getActivityProvider() {
