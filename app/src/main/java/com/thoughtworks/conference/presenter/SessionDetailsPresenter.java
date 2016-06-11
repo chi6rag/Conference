@@ -7,6 +7,11 @@ import com.thoughtworks.conference.model.Session;
 import com.thoughtworks.conference.repository.SessionRepository;
 import com.thoughtworks.conference.view.DetailView;
 
+import org.joda.time.Interval;
+
+import java.util.Date;
+import java.util.List;
+
 public class SessionDetailsPresenter {
 
   private final DetailView detailView;
@@ -19,7 +24,26 @@ public class SessionDetailsPresenter {
     this.resources = resources;
   }
 
-  public void saveSession(Session sessionToAdd) {
+  public void addSession(Session sessionToAdd){
+    List<Session> allSavedSessions = sessionRepository.getSavedSessions();
+    final Date startTimeOfNewSession = sessionToAdd.getStartTime();
+    final Date endTimeOfNewSession = sessionToAdd.getEndTime();
+    if(allSavedSessions.isEmpty())
+      saveSession(sessionToAdd);
+    else {
+      for (Session session : allSavedSessions) {
+        Interval interval1 = new Interval(startTimeOfNewSession.getTime(), endTimeOfNewSession.getTime());
+        Interval interval2 = new Interval(session.getStartTime().getTime(), session.getEndTime().getTime());
+        if (interval1.overlap(interval2) != null) {
+          detailView.showConflictPopup(session.getName(), sessionToAdd.getName());
+        } else {
+          saveSession(sessionToAdd);
+        }
+      }
+    }
+  }
+
+  private void saveSession(Session sessionToAdd) {
     sessionRepository.saveSession(sessionToAdd);
     detailView.showToast(resources.getString(R.string.session_saved));
     detailView.updateView();

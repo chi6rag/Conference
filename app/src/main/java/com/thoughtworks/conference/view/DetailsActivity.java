@@ -1,5 +1,6 @@
 package com.thoughtworks.conference.view;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailView {
   }
 
   public void saveSession(View view) {
-    detailsPresenter.saveSession(session);
+    detailsPresenter.addSession(session);
   }
 
   @Override
@@ -63,5 +64,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailView {
   @Override
   public void showToast(String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void showConflictPopup(String currentSessionTitle, String sessionToAddTitle) {
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder.setTitle(R.string.agenda_overlap_dialog_title);
+    alertDialogBuilder.setMessage(String.format("Timing of %s overlaps with timing of %s", currentSessionTitle, sessionToAddTitle));
+    AlertDialog dialog = alertDialogBuilder.create();
+    dialog.show();
   }
 }
