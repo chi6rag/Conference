@@ -25,4 +25,9 @@ public class TrackPresenter {
 
     trackView.render(sessionViewModels);
   }
+
+  public void selectSession(int position) {
+    Session session = sessions.get(position);
+    trackView.navigateToSessionDetail(session);
+  }
 }
