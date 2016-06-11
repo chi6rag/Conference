@@ -1,6 +1,8 @@
 package com.thoughtworks.conference.view;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -47,8 +49,18 @@ public class AgendaActivity extends AppCompatActivity implements AgendaView {
   }
 
   @Override
-  public void showErrorDialog(String eq) {
-
+  public void showErrorDialog(String message) {
+    AlertDialog alertDialog = new AlertDialog.Builder(this)
+        .setMessage(message)
+        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.dismiss();
+            finish();
+          }
+        })
+        .create();
+    alertDialog.show();
   }
 
   @Override
