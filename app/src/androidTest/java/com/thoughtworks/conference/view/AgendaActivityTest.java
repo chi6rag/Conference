@@ -3,6 +3,7 @@ package com.thoughtworks.conference.view;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
 
 import com.thoughtworks.conference.ConferenceAppAndroidJUnitRunner;
 import com.thoughtworks.conference.R;
@@ -14,6 +15,7 @@ import com.thoughtworks.conference.model.Session;
 import com.thoughtworks.conference.rules.ActivityUnitTestRule;
 import com.thoughtworks.conference.viewmodel.SessionViewModel;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,11 +28,16 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.thoughtworks.conference.testdata.TestDataUtil.parseDate;
+import static com.thoughtworks.conference.utils.CustomEspressoMatcher.atPositionInViewGroup;
+import static com.thoughtworks.conference.utils.CustomEspressoMatcher.withNumberOfChildren;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -78,6 +85,21 @@ public class AgendaActivityTest {
     onData(instanceOf(SessionViewModel.class)).inAdapterView(allOf(withId(R.id.list_view), isDisplayingAtLeast(70)))
         .atPosition(0).onChildView(withId(R.id.location)).check(matches(withText("Ballroom")));
   }
+
+  @Test
+  public void shouldShowCategoriesAsViewPagersTitle(){
+    mockAPIClientForSuccess();
+
+    activityTestRule.launchActivity(new Intent());
+
+    Matcher<View> slidingTabStripViewMatcher =
+        withClassName(is("android.support.design.widget.TabLayout$SlidingTabStrip"));
+    onView(slidingTabStripViewMatcher).check(matches(withNumberOfChildren(3)));
+    onView(atPositionInViewGroup(slidingTabStripViewMatcher, 0)).check(matches(withChild(withText("CREATE"))));
+    onView(atPositionInViewGroup(slidingTabStripViewMatcher, 1)).check(matches(withChild(withText("ASPIRE"))));
+    onView(atPositionInViewGroup(slidingTabStripViewMatcher, 2)).check(matches(withChild(withText("BELONG"))));
+  }
+
 
   @NonNull
   private ConferenceAppAndroidJUnitRunner.ActivityProvider<AgendaActivity> getActivityProvider() {
